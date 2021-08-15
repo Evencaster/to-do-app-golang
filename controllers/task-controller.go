@@ -48,7 +48,7 @@ func (c *TaskController) RemoveTask(ctx *gin.Context)  {
 		})
 	}
 
-	c.repo.RemoveTask(int64(id))
+	c.repo.RemoveTask(uint64(id))
 	ctx.JSON(200, gin.H{
 		"message": "ok",
 	})

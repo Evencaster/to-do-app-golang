@@ -6,13 +6,13 @@ import (
 )
 
 type Task struct {
-	ID 			int64		`json:"id,omitempty"`
+	ID 			uint64		`json:"id,omitempty"`
 	Name 		string		`json:"name"`
 	Timestamp 	int64		`json:"timestamp"`
 }
 
 type Repo struct {
-	sequence 	int64
+	sequence 	uint64
 	m 			sync.Mutex
 	tasks 		[]Task
 }
@@ -28,7 +28,7 @@ func (r *Repo) GetAllTasks() []Task {
 	return r.tasks
 }
 
-func (r *Repo) AddTask(name string) int64 {
+func (r *Repo) AddTask(name string) uint64 {
 	r.m.Lock()
 	defer r.m.Unlock()
 	r.sequence++
@@ -40,7 +40,7 @@ func (r *Repo) AddTask(name string) int64 {
 	return r.sequence
 }
 
-func (r *Repo) RemoveTask(id int64)  {
+func (r *Repo) RemoveTask(id uint64)  {
 	r.m.Lock()
 	defer r.m.Unlock()
 
