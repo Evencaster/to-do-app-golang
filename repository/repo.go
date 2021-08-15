@@ -31,10 +31,12 @@ func (r *Repo) GetAllTasks() []Task {
 func (r *Repo) AddTask(name string) uint64 {
 	r.m.Lock()
 	defer r.m.Unlock()
+
 	r.sequence++
+	id := r.sequence
 	r.tasks = append(r.tasks, Task{
 		Name: name,
-		ID: r.sequence,
+		ID: id,
 		Timestamp: time.Now().Unix(),
 	})
 	return r.sequence
