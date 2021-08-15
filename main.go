@@ -8,6 +8,7 @@ import (
 
 func main() {
 	r := gin.Default()
+	r.Static("/webapp", "./frontend/build")
 	repo := repository.NewMemRepo()
 	taskController := controllers.NewTaskController(repo)
 	r.GET("/", taskController.GetAllTasks)
