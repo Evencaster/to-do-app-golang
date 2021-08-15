@@ -8,7 +8,7 @@ import (
 
 func main() {
 	r := gin.Default()
-	repo := repository.New()
+	repo := repository.NewMemRepo()
 	taskController := controllers.NewTaskController(repo)
 	r.GET("/", taskController.GetAllTasks)
 	r.POST("/", taskController.AddTask)
