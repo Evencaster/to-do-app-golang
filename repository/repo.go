@@ -12,8 +12,8 @@ type Task struct {
 }
 
 type Repo struct {
+	m 			sync.RWMutex
 	sequence 	uint64
-	m 			sync.Mutex
 	tasks 		[]Task
 }
 
@@ -22,8 +22,8 @@ func New() *Repo {
 }
 
 func (r *Repo) GetAllTasks() []Task {
-	r.m.Lock()
-	defer r.m.Unlock()
+	r.m.RLock()
+	defer r.m.RUnlock()
 
 	return r.tasks
 }
