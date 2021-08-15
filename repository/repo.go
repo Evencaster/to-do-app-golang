@@ -18,7 +18,7 @@ type Repo struct {
 }
 
 func New() *Repo {
-	return &Repo{}
+	return &Repo{tasks: []Task{}}
 }
 
 func (r *Repo) GetAllTasks() []Task {
