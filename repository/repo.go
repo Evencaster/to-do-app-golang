@@ -45,9 +45,9 @@ func (r *Repo) RemoveTask(id uint64)  {
 	defer r.m.Unlock()
 
 	var newTasks []Task
-	for i := 0; i < len(r.tasks); i++ {
-		if r.tasks[i].ID != id {
-			newTasks = append(newTasks, r.tasks[i])
+	for _, t := range r.tasks {
+		if t.ID != id {
+			newTasks = append(newTasks, t)
 		}
 	}
 	r.tasks = newTasks
