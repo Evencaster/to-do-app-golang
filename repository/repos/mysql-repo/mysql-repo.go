@@ -20,21 +20,15 @@ type MySQLRepo struct {
 }
 
 func connectDB() *gorm.DB {
-	DB_USERNAME := "root"
-	DB_PASSWORD := "root"
-	DB_NAME := "to-do-app-db"
-	DB_HOST := "db"
-	DB_PORT := "3306"
+	DB_USERNAME := os.Getenv("DB_USERNAME")
+	DB_PASSWORD := os.Getenv("DB_PASSWORD")
+	DB_NAME := os.Getenv("DB_NAME")
+	DB_HOST := os.Getenv("DB_HOST")
+	DB_PORT := os.Getenv("DB_PORT")
 
 	connectionParams := url.Values{}
 	connectionParams.Set("parseTime","true")
 	connectionParams.Set("loc","Local")
-
-	//DB_USERNAME := os.Getenv("DB_USERNAME")
-	//DB_PASSWORD := os.Getenv("DB_PASSWORD")
-	//DB_NAME := os.Getenv("DB_NAME")
-	//DB_HOST := os.Getenv("DB_HOST")
-	//DB_PORT := os.Getenv("DB_PORT")
 
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)%s?%s",

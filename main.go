@@ -5,9 +5,16 @@ import (
 	"github.com/Evencaster/to-do-app-golang/repository/repos/mem-repo"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"log"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	r := gin.Default()
 	repo := mem_repo.NewMemRepo()
 	taskController := controllers.NewTaskController(repo)
@@ -19,7 +26,7 @@ func main() {
 
 	r.Use(static.Serve("/", static.LocalFile("./frontend/build", false)))
 
-	err := r.Run("127.0.0.1:5555")
+	err = r.Run("127.0.0.1:5555")
 	if err != nil {
 		panic(err)
 	}
