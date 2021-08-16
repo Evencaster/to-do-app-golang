@@ -1,27 +1,22 @@
-package repository
+package mem_repo
 
 import (
+	"github.com/Evencaster/to-do-app-golang/repository"
 	"sync"
 	"time"
 )
 
-type Task struct {
-	ID        uint64 `json:"id,omitempty"`
-	Name      string `json:"name"`
-	Timestamp int64  `json:"timestamp"`
-}
-
 type MemRepo struct {
 	m        sync.RWMutex
 	sequence uint64
-	tasks    []Task
+	tasks    []repo.Task
 }
 
 func NewMemRepo() *MemRepo {
-	return &MemRepo{tasks: []Task{}}
+	return &MemRepo{tasks: []repo.Task{}}
 }
 
-func (r *MemRepo) GetAllTasks() []Task {
+func (r *MemRepo) GetAllTasks() []repo.Task {
 	r.m.RLock()
 	defer r.m.RUnlock()
 
@@ -34,7 +29,7 @@ func (r *MemRepo) AddTask(name string) uint64 {
 
 	r.sequence++
 	id := r.sequence
-	r.tasks = append(r.tasks, Task{
+	r.tasks = append(r.tasks, repo.Task{
 		Name:      name,
 		ID:        id,
 		Timestamp: time.Now().Unix(),
@@ -46,7 +41,7 @@ func (r *MemRepo) RemoveTask(id uint64) {
 	r.m.Lock()
 	defer r.m.Unlock()
 
-	var newTasks []Task
+	var newTasks []repo.Task
 	for _, t := range r.tasks {
 		if t.ID != id {
 			newTasks = append(newTasks, t)
@@ -59,5 +54,5 @@ func (r *MemRepo) RemoveAllTasks() {
 	r.m.Lock()
 	defer r.m.Unlock()
 
-	r.tasks = []Task{}
+	r.tasks = []repo.Task{}
 }

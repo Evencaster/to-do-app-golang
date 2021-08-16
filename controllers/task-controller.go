@@ -11,10 +11,10 @@ type AddTaskBody struct {
 }
 
 type TaskController struct {
-	repo repository.Repo
+	repo repo.Repo
 }
 
-func NewTaskController(repo repository.Repo) *TaskController {
+func NewTaskController(repo repo.Repo) *TaskController {
 	return &TaskController{repo: repo}
 }
 

@@ -2,14 +2,14 @@ package main
 
 import (
 	"github.com/Evencaster/to-do-app-golang/controllers"
-	"github.com/Evencaster/to-do-app-golang/repository"
+	"github.com/Evencaster/to-do-app-golang/repository/repos/mem-repo"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
-	repo := repository.NewMemRepo()
+	repo := mem_repo.NewMemRepo()
 	taskController := controllers.NewTaskController(repo)
 
 	r.GET("/tasks", taskController.GetAllTasks)
