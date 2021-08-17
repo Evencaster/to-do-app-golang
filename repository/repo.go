@@ -1,13 +1,9 @@
 package repo
 
-type Task struct {
-	ID        uint64 `json:"id,omitempty"`
-	Name      string `json:"name"`
-	Timestamp int64  `json:"timestamp"`
-}
+import "github.com/Evencaster/to-do-app-golang/entities"
 
 type Repo interface {
-	GetAllTasks() []Task
+	GetAllTasks() []entities.Task
 	AddTask(name string) uint64
 	RemoveTask(id uint64)
 	RemoveAllTasks()

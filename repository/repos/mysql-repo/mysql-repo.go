@@ -2,19 +2,13 @@ package mysql_repo
 
 import (
 	"fmt"
-	repo "github.com/Evencaster/to-do-app-golang/repository"
+	"github.com/Evencaster/to-do-app-golang/entities"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
 	"net/url"
 	"os"
 )
-
-type TaskModel struct {
-	gorm.Model
-	ID 		int
-	Name 	string
-}
 
 type MySQLRepo struct {
 	db *gorm.DB
@@ -57,20 +51,16 @@ func NewMySQLRepo() *MySQLRepo {
 	return &MySQLRepo{db: db}
 }
 
-func (r *MySQLRepo) GetAllTasks() []repo.Task {
+func (r *MySQLRepo) GetAllTasks() []entities.Task {
 	var tasks []TaskModel
 	err := r.db.Find(&tasks).Error
 	if err != nil {
 		log.Fatal(err)
 	}
-	var out []repo.Task
+	var out []entities.Task
 
 	for _, t := range tasks {
-		out = append(out, repo.Task{
-			Name: t.Name,
-			ID: uint64(t.ID),
-			Timestamp: t.CreatedAt.Unix(),
-		})
+		out = append(out, t.toEntity())
 	}
 
 	return out
