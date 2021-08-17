@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/Evencaster/to-do-app-golang/controllers"
-	"github.com/Evencaster/to-do-app-golang/repository/repos/mem-repo"
+	mysql_repo "github.com/Evencaster/to-do-app-golang/repository/repos/mysql-repo"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -16,7 +16,8 @@ func main() {
 	}
 
 	r := gin.Default()
-	repo := mem_repo.NewMemRepo()
+	//repo := mem_repo.NewMemRepo()
+	repo := mysql_repo.NewMySQLRepo()
 	taskController := controllers.NewTaskController(repo)
 
 	r.GET("/tasks", taskController.GetAllTasks)

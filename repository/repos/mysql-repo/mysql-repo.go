@@ -5,6 +5,7 @@ import (
 	repo "github.com/Evencaster/to-do-app-golang/repository"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"log"
 	"net/url"
 	"os"
 )
@@ -31,7 +32,7 @@ func connectDB() *gorm.DB {
 	connectionParams.Set("loc","Local")
 
 	dsn := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)%s?%s",
+		"%s:%s@tcp(%s:%s)/%s?%s",
 		DB_USERNAME,
 		DB_PASSWORD,
 		DB_HOST,
@@ -49,22 +50,47 @@ func connectDB() *gorm.DB {
 
 func NewMySQLRepo() *MySQLRepo {
 	db := connectDB()
+	err := db.AutoMigrate(TaskModel{})
+	if err != nil {
+		log.Fatal(err)
+	}
 	return &MySQLRepo{db: db}
 }
 
 func (r *MySQLRepo) GetAllTasks() []repo.Task {
+	var tasks []TaskModel
+	err := r.db.Find(&tasks).Error
+	if err != nil {
+		log.Fatal(err)
+	}
+	var out []repo.Task
 
+	for _, t := range tasks {
+		out = append(out, repo.Task{
+			Name: t.Name,
+			ID: uint64(t.ID),
+			Timestamp: t.CreatedAt.Unix(),
+		})
+	}
+
+	return out
 }
 
-func (r *MySQLRepo) AddTask(name string)  {
+func (r *MySQLRepo) AddTask(name string) uint64 {
+	task := TaskModel{Name: name}
 
+	err := r.db.Create(&task).Error
+	if err != nil {
+		log.Fatal(err)
+	}
+	return uint64(task.ID)
 }
 
 func (r *MySQLRepo) RemoveTask(id uint64)  {
-
+	r.db.Where("id = ?", id).Delete(&TaskModel{})
 }
 
 func (r *MySQLRepo) RemoveAllTasks()  {
-
+	r.db.Delete(&TaskModel{})
 }
 
